@@ -8,7 +8,7 @@ def get_table_value(year_index, month, table):
     """
     rows = [tr for tr in table.find_all('tr')]
     cols = [col for col in rows[month].find_all('td')]
-    return float(cols[year_index].text.replace('%', '').replace(',', '.'))
+    return cols[year_index].text
 
 
 def crawler(year, month):
@@ -29,17 +29,25 @@ def crawler(year, month):
     # The first table have from 2011 to 2017 years values
     if year >= 2011 and year <= 2017:
         year_index = [i for i in range(2011, 2018)].index(year) + 1
-        return get_table_value(year_index, month, tables[1])
+        selic = get_table_value(year_index, month, tables[1])
+        if selic:
+            return selic
 
     # The first table have from 2003 to 2010 years values
     if year >= 2003 and year <= 2010:
-        year_index = [i for i in range(2003, 2010)].index(year) + 1
-        return get_table_value(year_index, month, tables[2])
+        year_index = [i for i in range(2003, 2011)].index(year) + 1
+        selic = get_table_value(year_index, month, tables[2])
+        if selic:
+            return selic
 
     # The first table have from 1995 to 2002 years values
     if year >= 1995 and year <= 2002:
-        year_index = [i for i in range(1995, 2002)].index(year) + 1
-        return get_table_value(year_index, month, tables[3])
+        year_index = [i for i in range(1995, 2003)].index(year) + 1
+        selic = get_table_value(year_index, month, tables[3])
+        if selic:
+            return selic
+
+    return "Sem registro"
 
 
 if __name__ == '__main__':

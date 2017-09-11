@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Consulta da taxa SELIC por mês e ano">
+    <meta name="author" content="Marcus Beckenkamp">
+
+    <title>Consulta SELIC</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <div class="container">
+      <div class="header clearfix">
+        <nav>
+          <ul class="nav nav-pills float-right">
+            <li class="nav-item">
+              <a class="nav-link" href="http://bit.ly/python-flask">Project on Github</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="http://mbeck.com.br/blog">Author's Blog</a>
+            </li>
+          </ul>
+        </nav>
+        <h3 class="text-muted">Consulta SELIC</h3>
+      </div>
+
+      <div class="jumbotron">
+        <h1 class="display-3">Consulte a SELIC</h1>
+        <p class="lead">Consulte o valor da taxa SELIC em um mês e ano específico preenchendo o formulário abaixo. A consulta é feita no site da Fazenda em tempo real.</p>
+        <div class="row justify-content-md-center">
+          <div class="col col-sm-6">
+            <form method="post">
+              <div class="form-group row">
+                <label for="month" class="col-sm-2 col-form-label">Mês</label>
+                <div class="col-sm-10">
+                  <select class="form-control" name="month" id="month">
+                    <option value="1" {% if request.form.get('month') == "1" %}selected{% endif %}>Janeiro</option>
+                    <option value="2" {% if request.form.get('month') == "2" %}selected{% endif %}>Fevereiro</option>
+                    <option value="3" {% if request.form.get('month') == "3" %}selected{% endif %}>Março</option>
+                    <option value="4" {% if request.form.get('month') == "4" %}selected{% endif %}>Abril</option>
+                    <option value="5" {% if request.form.get('month') == "5" %}selected{% endif %}>Maio</option>
+                    <option value="6" {% if request.form.get('month') == "6" %}selected{% endif %}>Junho</option>
+                    <option value="7" {% if request.form.get('month') == "7" %}selected{% endif %}>Julho</option>
+                    <option value="8" {% if request.form.get('month') == "8" %}selected{% endif %}>Agosto</option>
+                    <option value="9" {% if request.form.get('month') == "9" %}selected{% endif %}>Setembro</option>
+                    <option value="10" {% if request.form.get('month') == "10" %}selected{% endif %}>Outubro</option>
+                    <option value="11" {% if request.form.get('month') == "11" %}selected{% endif %}>Novembro</option>
+                    <option value="12" {% if request.form.get('month') == "12" %}selected{% endif %}>Dezembro</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="year" class="col-sm-2 col-form-label">Ano</label>
+                <div class="col-sm-10">
+                  <select class="form-control" name="year" id="year">
+                    {% for i in range(1995, 2018) %}
+                      <option {% if request.form.get('year') == i|string %}selected{% endif %}>{{ i }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary">Consultar</button>
+            </form>
+          </div>
+        </div>
+
+        {% if result %}
+          <div class="row justify-content-md-center">
+            <div class="col col-sm-6">
+              <hr>
+              <p class="lead">
+                Taxa SELIC em {{ request.form.get('month').zfill(2) }}/{{ request.form.get('year') }}:
+              </p>
+              <h1 class="display-3">{{ result }}</h1>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="row marketing">
+        <div class="col-lg-6">
+          <h4>Sobre a consulta</h4>
+          <p>A consulta é feita no site da Fazenda em tempo real <a href="http://idg.receita.fazenda.gov.br/orientacao/tributaria/pagamentos-e-parcelamentos/taxa-de-juros-selic">nesta URL</a>.</p>
+
+          <h4>Garantias</h4>
+          <p>Este site foi desenvolvido para fins educativos e não dá nenhuma garantia sobre os valores informados.</p>
+        </div>
+
+        <div class="col-lg-6">
+          <h4>Repositório</h4>
+          <p>O código fonte deste site está disponível no <a href="http://bit.ly/python-flask">Github</a> sob a licensa MIT.</p>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <p><a href="http://mbeck.com.br/blog">Marcus Beckenkamp</a> 2017</p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+  </body>
+</html>
